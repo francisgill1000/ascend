@@ -32,7 +32,7 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        $home = $request->user()->isAdmin()
+        $home = $request->user()->isAcademyUser()
             ? route('academy.dashboard')
             : route('student.home');
 

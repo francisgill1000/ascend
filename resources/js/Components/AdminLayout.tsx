@@ -17,7 +17,7 @@ import {
 } from './AscendIcons';
 import { Btn } from './ui';
 
-type NavItem = { label: string; route: string; href: string; icon: (p: { size?: number }) => ReactNode; live?: boolean };
+type NavItem = { label: string; route: string; href: string; icon: (p: { size?: number }) => ReactNode; live?: boolean; adminOnly?: boolean };
 
 function useFlash() {
     const flash = (usePage().props.flash ?? {}) as { success?: string | null; error?: string | null };
@@ -53,7 +53,8 @@ export default function AdminLayout({
     const initials = user
         ? user.name.split(' ').map((w) => w[0]).slice(0, 2).join('').toUpperCase()
         : 'PN';
-    const roleLabel = user ? (user.role === 'admin' ? 'Academy Director' : 'Academy Staff') : 'Academy Director';
+    const isAdmin = user?.role === 'admin';
+    const roleLabel = isAdmin ? 'Academy Director' : 'Academy Staff';
     const logout = () => router.post(route('logout'));
 
     const items: NavItem[] = [
@@ -62,12 +63,12 @@ export default function AdminLayout({
         { label: 'Courses', route: 'academy.courses', href: route('academy.courses'), icon: Book },
         { label: 'Timetable', route: 'academy.timetable', href: route('academy.timetable'), icon: Calendar },
         { label: 'Attendance', route: 'academy.attendance', href: route('academy.attendance'), icon: Clipboard, live: true },
-        { label: 'Fees', route: 'academy.fees', href: route('academy.fees'), icon: CardIcon },
-        { label: 'Reports', route: 'academy.reports', href: route('academy.reports'), icon: Chart },
-    ];
-    const account: NavItem[] = [
-        { label: 'Settings', route: 'academy.settings', href: route('academy.settings'), icon: SettingsIcon },
-    ];
+        { label: 'Fees', route: 'academy.fees', href: route('academy.fees'), icon: CardIcon, adminOnly: true },
+        { label: 'Reports', route: 'academy.reports', href: route('academy.reports'), icon: Chart, adminOnly: true },
+    ].filter((it) => isAdmin || ! it.adminOnly);
+    const account: NavItem[] = isAdmin
+        ? [{ label: 'Settings', route: 'academy.settings', href: route('academy.settings'), icon: SettingsIcon }]
+        : [];
 
     const path = url.split('?')[0];
     const isActive = (href: string) => {
@@ -113,8 +114,12 @@ export default function AdminLayout({
                 </div>
                 <div className="nav-section-title">Academy</div>
                 <div className="nav-items">{items.map(NavBtn)}</div>
-                <div className="nav-section-title">Account</div>
-                <div className="nav-items">{account.map(NavBtn)}</div>
+                {account.length > 0 && (
+                    <>
+                        <div className="nav-section-title">Account</div>
+                        <div className="nav-items">{account.map(NavBtn)}</div>
+                    </>
+                )}
                 <div className="sidebar-footer">
                     <div className="avatar">{initials}</div>
                     <div style={{ minWidth: 0 }}>

@@ -22,6 +22,17 @@ class User extends Authenticatable
         return $this->role === 'admin';
     }
 
+    public function isStaff(): bool
+    {
+        return $this->role === 'staff';
+    }
+
+    /** Admin + staff can reach the academy admin chrome (staff has a reduced subset). */
+    public function isAcademyUser(): bool
+    {
+        return in_array($this->role, ['admin', 'staff'], true);
+    }
+
     /**
      * Get the attributes that should be cast.
      *

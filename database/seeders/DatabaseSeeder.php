@@ -22,6 +22,16 @@ class DatabaseSeeder extends Seeder
             ],
         );
 
+        // Staff (limited admin / teacher): academy chrome minus Fees/Reports/Settings.
+        User::updateOrCreate(
+            ['email' => env('Staff_EMAIL', 'staff@eloquentservice.com')],
+            [
+                'name'     => 'Karim Haddad',
+                'role'     => 'staff',
+                'password' => Hash::make(env('Staff_PASSWORD', 'Staff@2026')),
+            ],
+        );
+
         // The student-facing account. Presented as the enrolled student
         // Francis Gill (S-1042) inside the student app.
         User::updateOrCreate(

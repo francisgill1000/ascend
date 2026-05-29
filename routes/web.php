@@ -3,6 +3,7 @@
 use App\Http\Controllers\AcademyController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StudentController;
+use App\Http\Middleware\EnsureAcademy;
 use App\Http\Middleware\EnsureAdmin;
 use Illuminate\Support\Facades\Route;
 
@@ -11,7 +12,7 @@ Route::get('/', function () {
         return redirect()->route('login');
     }
 
-    return auth()->user()->isAdmin()
+    return auth()->user()->isAcademyUser()
         ? redirect()->route('academy.dashboard')
         : redirect()->route('student.home');
 });
@@ -28,16 +29,20 @@ Route::middleware('auth')->group(function () {
     // Student app — any authenticated user (admins may preview it too).
     Route::get('/student', [StudentController::class, 'home'])->name('student.home');
 
-    // Academy admin — admins only.
-    Route::middleware(EnsureAdmin::class)->group(function () {
+    // Academy admin chrome — admins + staff.
+    Route::middleware(EnsureAcademy::class)->group(function () {
         Route::get('/dashboard', [AcademyController::class, 'dashboard'])->name('academy.dashboard');
         Route::get('/students', [AcademyController::class, 'students'])->name('academy.students');
         Route::get('/courses', [AcademyController::class, 'courses'])->name('academy.courses');
         Route::get('/timetable', [AcademyController::class, 'timetable'])->name('academy.timetable');
         Route::get('/attendance', [AcademyController::class, 'attendance'])->name('academy.attendance');
         Route::post('/attendance', [AcademyController::class, 'submitAttendance'])->name('academy.attendance.submit');
-        Route::get('/fees', [AcademyController::class, 'fees'])->name('academy.fees');
-        Route::get('/reports', [AcademyController::class, 'reports'])->name('academy.reports');
-        Route::get('/settings', [AcademyController::class, 'settings'])->name('academy.settings');
+
+        // Finance / analytics / config — admins only.
+        Route::middleware(EnsureAdmin::class)->group(function () {
+            Route::get('/fees', [AcademyController::class, 'fees'])->name('academy.fees');
+            Route::get('/reports', [AcademyController::class, 'reports'])->name('academy.reports');
+            Route::get('/settings', [AcademyController::class, 'settings'])->name('academy.settings');
+        });
     });
 });
