@@ -8,14 +8,19 @@ dark + mint design system (Geist type), same house style as `maison-order` / `gy
 
 ## Auth
 Login required (Laravel session auth, hand-rolled on-brand login page). Seeded accounts:
-- **Admin** — `info@eloquentservice.com` / `1@Ab56ab56` (role `admin`)
-- **User** — `user@eloquentservice.com` / `password` (role `user`)
+- **Admin** — `info@eloquentservice.com` / `1@Ab56ab56` (role `admin`) — full academy admin
+- **Staff** — `staff@eloquentservice.com` / `Staff@2026` (role `staff`) — teacher: Dashboard,
+  Students, Courses, Timetable, Attendance only (no Fees/Reports/Settings)
+- **User** — `user@eloquentservice.com` / `password` (role `user`) — student app
 
 Credentials come from `Admin_EMAIL`/`Admin_PASSWORD` and `User_EMAIL`/`User_PASSWORD` env vars
 (see `.env.example`).
 
 **Role-routed surfaces:**
-- **Admin** → the 8-page academy admin (`/dashboard` …). `EnsureAdmin` middleware guards it.
+- **Admin** → the full 8-page academy admin (`/dashboard` …).
+- **Staff** → academy chrome minus finance/analytics/config: `EnsureAcademy` guards the chrome
+  (admin + staff), `EnsureAdmin` guards the Fees/Reports/Settings subset (admins only; staff
+  bounced to `/dashboard`). Sidebar hides those items for staff.
 - **User** → the **student app** at `/student` — a mobile, bottom-tab app (Home, Schedule,
   Courses, Grades, Profile) built from the bundle's `ASCEND Student.html`, presented as the
   enrolled student Francis Gill (S-1042). Single page `Pages/Student/App.tsx`, styles in
