@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Assignment;
 use App\Models\ClassSession;
 use App\Models\Course;
 use App\Models\Payment;
@@ -80,6 +81,24 @@ class AcademySeeder extends Seeder
                 'room'      => $room,
                 'topic'     => $topic,
                 'status'    => $status,
+                'sort'      => $sort,
+            ]);
+        }
+
+        // ── Assignments (student app: due + graded) ──
+        $assignments = [
+            ['A1', 'C1', 'Integration problem set 7',      'Tomorrow',  'pending', null],
+            ['A2', 'C5', 'Binary tree implementation',     'In 3 days', 'pending', null],
+            ['A3', 'C3', 'Reaction mechanisms lab report', 'Submitted', 'graded',  92],
+            ['A4', 'C1', 'Calculus quiz 5',                'Submitted', 'graded',  85],
+        ];
+        foreach ($assignments as $sort => [$ext, $crs, $title, $due, $status, $score]) {
+            Assignment::updateOrCreate(['ext_id' => $ext], [
+                'course_id' => $course[$crs],
+                'title'     => $title,
+                'due'       => $due,
+                'status'    => $status,
+                'score'     => $score,
                 'sort'      => $sort,
             ]);
         }

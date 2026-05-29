@@ -163,6 +163,63 @@ export const Logout = (p: IconProps) => (
     </Svg>
 );
 
+export const Home = (p: IconProps) => (
+    <Svg {...p}>
+        <path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z" />
+    </Svg>
+);
+
+export const Award = (p: IconProps) => (
+    <Svg {...p}>
+        <path d="M12 3a6 6 0 1 0 0 12 6 6 0 0 0 0-12z" />
+        <path d="M9 14.5L8 22l4-2 4 2-1-7.5" />
+    </Svg>
+);
+
+export const UserIcon = (p: IconProps) => (
+    <Svg {...p}>
+        <path d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8z" />
+        <path d="M4 21a8 8 0 0 1 16 0" />
+    </Svg>
+);
+
+export const Video = (p: IconProps) => (
+    <Svg {...p}>
+        <path d="M3 7a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z" />
+        <path d="M16 10l5-3v10l-5-3z" />
+    </Svg>
+);
+
+export const Doc = (p: IconProps) => (
+    <Svg {...p}>
+        <path d="M6 3h8l4 4v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" />
+        <path d="M14 3v4h4" />
+    </Svg>
+);
+
+export const Pencil = (p: IconProps) => (
+    <Svg {...p}>
+        <path d="M4 20l4-1L20 7l-3-3L5 16z" />
+        <path d="M14 7l3 3" />
+    </Svg>
+);
+
+export const Star = ({ size = 18, fill = 'none', ...rest }: IconProps & { fill?: string }) => (
+    <svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill={fill}
+        stroke="currentColor"
+        strokeWidth={1.7}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        {...rest}
+    >
+        <path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9 6.8 19.6l1-5.8L3.5 9.7l5.9-.9z" />
+    </svg>
+);
+
 /** ASCEND brand mark — graduation cap glyph used in the sidebar lockup. */
 export function AscendMark({ size = 20 }: { size?: number }) {
     return (

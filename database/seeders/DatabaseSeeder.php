@@ -22,10 +22,12 @@ class DatabaseSeeder extends Seeder
             ],
         );
 
+        // The student-facing account. Presented as the enrolled student
+        // Francis Gill (S-1042) inside the student app.
         User::updateOrCreate(
             ['email' => env('User_EMAIL', 'user@eloquentservice.com')],
             [
-                'name'     => 'Academy Staff',
+                'name'     => 'Francis Gill',
                 'role'     => 'user',
                 'password' => Hash::make(env('User_PASSWORD', 'password')),
             ],

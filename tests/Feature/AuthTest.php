@@ -44,8 +44,9 @@ class AuthTest extends TestCase
             'password' => Hash::make('password'),
         ]);
 
+        // A user-role account lands on the student app.
         $this->post('/login', ['email' => '  User@Eloquentservice.com  ', 'password' => 'password'])
-            ->assertRedirect(route('academy.dashboard'));
+            ->assertRedirect(route('student.home'));
 
         $this->assertAuthenticatedAs($user);
     }

@@ -32,7 +32,11 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('academy.dashboard'));
+        $home = $request->user()->isAdmin()
+            ? route('academy.dashboard')
+            : route('student.home');
+
+        return redirect()->intended($home);
     }
 
     public function logout(Request $request): RedirectResponse
