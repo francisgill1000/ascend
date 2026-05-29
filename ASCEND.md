@@ -4,6 +4,22 @@ Coaching-academy management web app, built from a **Claude Design** handoff bund
 (`sale-agent-template` → `ASCEND.html`). Recreated pixel-faithfully on the Eloquent
 dark + mint design system (Geist type), same house style as `maison-order` / `gym`.
 
+**Live:** https://academy.eloquentservice.com · repo `github.com/francisgill1000/ascend`
+
+## Auth
+Login required (Laravel session auth, hand-rolled on-brand login page). Seeded accounts:
+- **Admin** — `info@eloquentservice.com` / `1@Ab56ab56` (role `admin`)
+- **User** — `user@eloquentservice.com` / `password` (role `user`)
+
+Credentials come from `Admin_EMAIL`/`Admin_PASSWORD` and `User_EMAIL`/`User_PASSWORD` env vars
+(see `.env.example`). Both roles currently land on the same admin; the `role` column is in place
+for future gating (the bundle's unbuilt student app is the natural home for the `user` role).
+
+## Deploy
+First deploy done via the `deploy-eloquent-app` skill: `/var/www/ascend` on the shared droplet,
+**SQLite in production** (matching gym), nginx vhost `academy.eloquentservice.com`, Certbot SSL.
+Redeploy = the skill's one-liner (`git pull` → composer → `npm run build` → migrate → cache → chown).
+
 ## Stack
 Laravel 13 · Inertia 2 · React 18 · TypeScript · Vite 8 · SQLite
 
