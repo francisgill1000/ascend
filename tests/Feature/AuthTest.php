@@ -51,6 +51,21 @@ class AuthTest extends TestCase
         $this->assertAuthenticatedAs($user);
     }
 
+    public function test_password_surrounding_whitespace_is_ignored(): void
+    {
+        $user = User::factory()->create([
+            'email'    => 'staff@eloquentservice.com',
+            'role'     => 'staff',
+            'password' => Hash::make('Staff@2026'),
+        ]);
+
+        // Pasted from a bordered table cell → trailing spaces.
+        $this->post('/login', ['email' => 'staff@eloquentservice.com', 'password' => 'Staff@2026    '])
+            ->assertRedirect(route('academy.dashboard'));
+
+        $this->assertAuthenticatedAs($user);
+    }
+
     public function test_invalid_credentials_are_rejected(): void
     {
         User::factory()->create(['email' => 'info@eloquentservice.com', 'password' => Hash::make('1@Ab56ab56')]);

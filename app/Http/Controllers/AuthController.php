@@ -23,8 +23,11 @@ class AuthController extends Controller
         ]);
 
         // Normalise the email so mobile auto-capitalisation / stray whitespace
-        // doesn't cause a (case-sensitive) lookup miss.
+        // doesn't cause a (case-sensitive) lookup miss. Trim surrounding
+        // whitespace off the password too — copy-pasting from a table or chat
+        // commonly drags in trailing spaces, which shouldn't fail a login.
         $credentials['email'] = strtolower(trim($credentials['email']));
+        $credentials['password'] = trim($credentials['password']);
 
         if (! Auth::attempt($credentials, $request->boolean('remember'))) {
             return back()->withErrors(['email' => 'Those credentials don’t match our records.'])->onlyInput('email');
