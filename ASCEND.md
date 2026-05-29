@@ -12,8 +12,16 @@ Login required (Laravel session auth, hand-rolled on-brand login page). Seeded a
 - **User** — `user@eloquentservice.com` / `password` (role `user`)
 
 Credentials come from `Admin_EMAIL`/`Admin_PASSWORD` and `User_EMAIL`/`User_PASSWORD` env vars
-(see `.env.example`). Both roles currently land on the same admin; the `role` column is in place
-for future gating (the bundle's unbuilt student app is the natural home for the `user` role).
+(see `.env.example`).
+
+**Role-routed surfaces:**
+- **Admin** → the 8-page academy admin (`/dashboard` …). `EnsureAdmin` middleware guards it.
+- **User** → the **student app** at `/student` — a mobile, bottom-tab app (Home, Schedule,
+  Courses, Grades, Profile) built from the bundle's `ASCEND Student.html`, presented as the
+  enrolled student Francis Gill (S-1042). Single page `Pages/Student/App.tsx`, styles in
+  `resources/css/student.css`.
+
+Login and `/` redirect by role; a user hitting an admin URL is bounced to `/student`.
 
 ## Deploy
 First deploy done via the `deploy-eloquent-app` skill: `/var/www/ascend` on the shared droplet,
