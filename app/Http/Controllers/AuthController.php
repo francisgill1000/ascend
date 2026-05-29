@@ -22,6 +22,10 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
+        // Normalise the email so mobile auto-capitalisation / stray whitespace
+        // doesn't cause a (case-sensitive) lookup miss.
+        $credentials['email'] = strtolower(trim($credentials['email']));
+
         if (! Auth::attempt($credentials, $request->boolean('remember'))) {
             return back()->withErrors(['email' => 'Those credentials don’t match our records.'])->onlyInput('email');
         }
